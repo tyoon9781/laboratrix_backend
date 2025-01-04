@@ -52,7 +52,6 @@ if ENV == LOCAL:
 else:
     if None in [DB_URL]:
         raise ValueError("DB Environments variables are invalid")
-print(f"{DB_URL=}")
 
 
 ## =========================

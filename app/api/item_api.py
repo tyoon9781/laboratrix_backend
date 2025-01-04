@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
 from app.schemas import item_schema, token_schema
@@ -7,6 +7,16 @@ from app.utils import auth
 from app.crud import item_crud
 
 router = APIRouter()
+
+
+@router.get("/items")
+def get_items(
+    db: Session = Depends(get_db),
+    page: int = Query(1, ge=1, description="page"),
+    size: int = Query(10, ge=1, le=100, description="size"),
+):
+    db_item = item_crud.get_items(db=db, page=page, size=size)
+    return db_item
 
 
 @router.post("/items")
@@ -32,7 +42,9 @@ def get_item(item_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/items/{item_id}")
-def update_item(item_id: int, item: item_schema.ItemUpdate, db: Session = Depends(get_db)):
+def update_item(
+    item_id: int, item: item_schema.ItemUpdate, db: Session = Depends(get_db)
+):
     db_item = item_crud.update_item(
         db=db, item_id=item_id, title=item.title, contents=item.contents
     )
