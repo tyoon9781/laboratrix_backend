@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.connect import get_db, get_redis
 import redis
 
-router = APIRouter(prefix="/local")
+router = APIRouter()
 
 
 @router.get("/")

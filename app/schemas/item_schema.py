@@ -15,7 +15,7 @@ class ItemUpdate(ItemBase):
     pass
 
 
-class ItemOut(ItemBase):
+class Item(ItemBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
@@ -42,7 +42,7 @@ class CommentUpdate(CommentBase):
     pass
 
 
-class CommentOut(CommentBase):
+class Comment(CommentBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int

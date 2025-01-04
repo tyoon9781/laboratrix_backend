@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.schemas import item_schema
+from app.schemas import item_schema, token_schema
 from app.connect import get_db
 from app.utils import auth
 from app.crud import item_crud
@@ -13,10 +13,10 @@ router = APIRouter()
 def create_item(
     item: item_schema.ItemCreate,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(auth.get_current_user),
+    token_data: token_schema.TokenData = Depends(auth.is_valid_token),
 ):
     db_item = create_item(
-        db=db, title=item.title, contents=item.contents, user_id=current_user["id"]
+        db=db, title=item.title, contents=item.contents, user_id=token_data.id
     )
     return db_item
 
@@ -58,10 +58,10 @@ def add_comment(
     item_id: int,
     comment: item_schema.CommentCreate,
     db: Session = Depends(get_db),
-    current_user: dict = Depends(auth.get_current_user),
+    token_data: token_schema.TokenData = Depends(auth.is_valid_token),
 ):
     db_comment = item_crud.add_comment(
-        db=db, contents=comment.contents, item_id=item_id, user_id=current_user["id"]
+        db=db, contents=comment.contents, item_id=item_id, user_id=token_data.id
     )
     return db_comment
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.user_model import User
-from app.utils import utc_now
+from app.utils import utc_now, auth
 
 
 def get_users(db: Session, page: int = 1, size: int = 10):
@@ -33,3 +33,14 @@ def update_user(db: Session, user_id: int, password: str, is_active: bool):
         db.refresh(db_user)
         return db_user
     return None
+
+def authenticate_user(db: Session, user_email: str, password: str) -> User|None:
+    db_user = db.query(User).filter(User.email == user_email).first()
+    
+    if db_user is None:
+        return None
+    
+    if not auth.verify_password(password, db_user.hashed_password):
+        return None
+    
+    return db_user

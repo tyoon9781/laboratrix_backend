@@ -9,6 +9,7 @@ services:
     ports:
       - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
     environment:
+      SECRET_KEY: ${SECRET_KEY}
       BACKEND_HOST_PORT: ${BACKEND_HOST_PORT}
       BACKEND_CONTAINER_PORT: ${BACKEND_CONTAINER_PORT}
       DB_TYPE: ${DB_TYPE}

@@ -9,10 +9,6 @@ engine = create_engine(DB_URL, pool_size=100)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
-def local_create_tables():
-    Base.metadata.create_all(bind=engine)
-
-
 def get_db():
     db = SessionLocal()
     try:
