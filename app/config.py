@@ -20,6 +20,7 @@ LOGIN_SESSION_EXPIRED_SECONDS: int = LOGIN_SESSION_EXPIRED_MINUTES * 60
 if None in [SECRET_KEY, ALGORITHM]:
     raise ValueError("Authorization Environments variables are invalid")
 
+CSRF_TOKEN_EXPIRED_SECONDS: int = 3600
 
 ## =========================
 ## Requirements Environments.

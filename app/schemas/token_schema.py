@@ -9,3 +9,6 @@ class TokenData(BaseModel):
     name: str
     iat: int
     exp: int
+
+class CSRFToken(BaseModel):
+    id: str

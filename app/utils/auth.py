@@ -8,9 +8,12 @@ import jwt
 import bcrypt
 import time
 
+
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 
+def gen_csrftoken() -> str:
+    return uuid.uuid4().hex
 
 def _peppered_password(plain_password: str) -> str:
     return plain_password + SECRET_KEY
