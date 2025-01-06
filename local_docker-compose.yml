@@ -25,7 +25,7 @@ services:
     depends_on:
       - local_db
       - local_redis
-    command: ["tail", "-f", "/dev/null"]  ## for local
+    command: ["tail", "-f", "/dev/null"]  ## for Development
 
   local_db:
     image: postgres:16.5-alpine

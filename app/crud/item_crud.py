@@ -12,6 +12,11 @@ def create_item(db: Session, title: str, contents: str, user_id: int):
     return db_item
 
 
+def get_items(db: Session, page: int, size: int):
+    offset = (page - 1) * size
+    return db.query(Item).offset(offset).limit(size).all()
+
+
 def get_item_by_id(db: Session, item_id: int):
     return db.query(Item).filter(Item.id == item_id).first()
 

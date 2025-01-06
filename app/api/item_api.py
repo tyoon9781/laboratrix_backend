@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
+
 from sqlalchemy.orm import Session
 
 from app.schemas import item_schema, token_schema
@@ -11,7 +12,6 @@ from app.config import CSRF_TOKEN
 
 
 router = APIRouter(prefix="/items")
-
 
 async def verify_csrf_token(request: Request, user_token:token_schema.TokenData) -> str:
     form_data = await request.form()
@@ -39,6 +39,15 @@ def create_item(request: Request, item: item_schema.ItemCreate, db: Session = De
     
     return item_crud.create_item(db=db, item=item)
 
+@router.get("/")
+def get_items(
+    db: Session = Depends(get_db),
+    page: int = Query(1, ge=1, description="page"),
+    size: int = Query(10, ge=1, le=100, description="size"),
+):
+    db_item = item_crud.get_items(db=db, page=page, size=size)
+    return db_item
+
 
 @router.get("/{item_id}")
 def get_item(item_id: int, db: Session = Depends(get_db)):
@@ -48,7 +57,6 @@ def get_item(item_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
         )
     return db_item
-
 
 @router.post("/{item_id}")
 def update_item(item_id: int, item: item_schema.ItemUpdate, db: Session = Depends(get_db)):
