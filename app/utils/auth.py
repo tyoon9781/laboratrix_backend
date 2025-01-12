@@ -8,6 +8,7 @@ import jwt
 import bcrypt
 import time
 
+
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 

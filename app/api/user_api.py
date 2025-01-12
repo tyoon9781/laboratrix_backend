@@ -11,6 +11,18 @@ from app.config import LOGIN_SESSION_EXPIRED_SECONDS, ACCESS_TOKEN, CSRF_TOKEN
 router = APIRouter(prefix="/users")
 
 
+def verify_user_db(
+    user_token: token_schema.TokenData, db: Session = Depends(get_db)
+) -> user_schema.User:
+    db_user = user_crud.get_user_by_id(db=db, user_id=user_token.id)
+    if db_user is None or db_user.user_name != user_token.name:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+        )
+
+    return db_user
+
+
 @router.get("/")
 def get_users(page: int = 1, size: int = 10, db: Session = Depends(get_db)):
     users = user_crud.get_users(db, page, size)

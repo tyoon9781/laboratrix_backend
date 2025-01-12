@@ -1,17 +1,21 @@
 from fastapi import FastAPI
-from app.api import item_api, user_api, local_api
+from app.api import item_api, user_api, auth_api
 from app.config import ENV, LOCAL
 
 
 app = FastAPI()
 
-app.include_router(item_api.router, prefix="/api")
-app.include_router(user_api.router, prefix="/api")
+api_prefix = "/api"
+
+app.include_router(auth_api.router, prefix=api_prefix)
+app.include_router(item_api.router, prefix=api_prefix)
+app.include_router(user_api.router, prefix=api_prefix)
 
 if ENV == LOCAL:
     from app.connect import Base, engine, SessionLocal
     from app.crud import user_crud
     from app.utils import auth
+    from app.api import local_api
 
     def make_table():
         Base.metadata.create_all(bind=engine)

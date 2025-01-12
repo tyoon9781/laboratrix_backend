@@ -21,6 +21,7 @@ CSRF_TOKEN_EXPIRED_SECONDS = 3600
 if None in [SECRET_KEY, ALGORITHM]:
     raise ValueError("Authorization Environments variables are invalid")
 
+CSRF_TOKEN_EXPIRED_SECONDS: int = 3600
 
 ## =========================
 ## Requirements Environments.
