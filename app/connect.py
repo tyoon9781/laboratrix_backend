@@ -17,11 +17,9 @@ def get_db():
         db.close()
 
 
-def get_redis():
-    client = redis.Redis(
-        host=REDIS_HOST,
-        port=REDIS_PORT,
-        password=REDIS_PASSWORD,
-        decode_responses=True,  # Redis에서 반환되는 값이 문자열로 처리되도록 설정
-    )
-    return client
+redis_client = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    password=REDIS_PASSWORD,
+    decode_responses=True,  # Redis에서 반환되는 값이 문자열로 처리되도록 설정
+)

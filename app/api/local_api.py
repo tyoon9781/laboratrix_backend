@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from fastapi import APIRouter, Depends
 from sqlalchemy.exc import SQLAlchemyError
-from app.connect import get_db, get_redis
+from app.connect import get_db, redis_client
 import redis
 
 router = APIRouter()
@@ -23,7 +23,7 @@ def connect_db(db=Depends(get_db)):
 
 
 @router.get("/redis_connect")
-def connect_redis(redis_client=Depends(get_redis)):
+def connect_redis():
     try:
         # Redis 연결 확인 (ping 테스트)
         redis_client.ping()  # Redis 서버에 ping을 보냄

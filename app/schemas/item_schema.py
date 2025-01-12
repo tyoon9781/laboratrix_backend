@@ -7,12 +7,23 @@ class ItemBase(BaseModel):
     contents: str
 
 
-class ItemCreate(ItemBase):
+class ItemCreateRequest(ItemBase):
     pass
 
 
 class ItemUpdate(ItemBase):
     pass
+
+
+class ItemView(BaseModel):
+    id: int
+    title: str
+    comment_count: int
+    view_count: int
+    user_id: int
+    is_modified: bool
+    created_at: datetime
+    updated_at: datetime
 
 
 class Item(ItemBase):
@@ -51,4 +62,3 @@ class Comment(CommentBase):
     is_modified: bool
     created_at: datetime
     updated_at: datetime
-

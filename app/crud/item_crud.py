@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.item_model import Item, Comment
+from app.models.user_model import User
 from app.utils import utc_now
 
 
@@ -12,9 +13,25 @@ def create_item(db: Session, title: str, contents: str, user_id: int):
     return db_item
 
 
-def get_items(db: Session, page: int, size: int):
-    offset = (page - 1) * size
-    return db.query(Item).offset(offset).limit(size).all()
+def get_items(db: Session, skip: int, limit: int):
+    return (
+        db.query(
+            Item.id,
+            Item.title,
+            Item.view_count,
+            Item.comment_count,
+            Item.created_at,
+            User.user_name,
+        )
+        .join(User, Item.user_id == User.id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+
+
+def get_items_count(db: Session):
+    return db.query(Item).count()
 
 
 def get_item_by_id(db: Session, item_id: int):

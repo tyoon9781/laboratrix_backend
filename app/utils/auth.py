@@ -11,6 +11,9 @@ import time
 oauth2_schema = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 
+def generate_csrftoken() -> str:
+    return uuid.uuid4().hex
+
 
 def _peppered_password(plain_password: str) -> str:
     return plain_password + SECRET_KEY
@@ -34,11 +37,11 @@ def create_access_token(user: User):
     exp = iat + LOGIN_SESSION_EXPIRED_SECONDS
     data = TokenData(id=user.id, name=user.user_name, iat=iat, exp=exp)
 
-    to_encode = data.model_dump()    
+    to_encode = data.model_dump()
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def is_valid_token(token_str: str) -> TokenData|None:
+def is_valid_token(token_str: str) -> TokenData | None:
     try:
         token_dict = jwt.decode(token_str, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenData(**token_dict)
@@ -47,5 +50,5 @@ def is_valid_token(token_str: str) -> TokenData|None:
 
     if token_data.exp < time.time():
         return None
-    
+
     return token_data

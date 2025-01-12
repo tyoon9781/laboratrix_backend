@@ -17,6 +17,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 LOGIN_SESSION_EXPIRED_MINUTES: int = 60
 LOGIN_SESSION_EXPIRED_SECONDS: int = LOGIN_SESSION_EXPIRED_MINUTES * 60
+CSRF_TOKEN_EXPIRED_SECONDS = 3600
 if None in [SECRET_KEY, ALGORITHM]:
     raise ValueError("Authorization Environments variables are invalid")
 
@@ -73,3 +74,4 @@ REDIS_PORT = int(REDIS_PORT)
 UTF_8 = "utf-8"
 ACCESS_TOKEN = "access_token"
 CSRF_TOKEN = "csrftoken"
+X_CSRF_TOKEN = "X-CSRF-TOKEN"
